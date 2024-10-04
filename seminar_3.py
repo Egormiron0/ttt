@@ -1,51 +1,50 @@
-'''def F(n,cache):
-    if n==0 or n==1:
-        cache [n] =1
-        return 1
-    if cache [n]!=0:
-        return cache [n]
-    cache [n] = F(n-1,cache)+F(n-2,cache)
-    return cache [n]
+'''#расстояние Левенштейна
 
-n=105
-cache=[0 for i in range(n+1)]
-
-
-print(F(n,cache))'''
-
-
-'''
-def F(x,n):
-    if n ==1:
-        return x
-    if n%2==0:
-        return F(x,n//2)**2
-    else:
-        return F(x,n-1)*x
+a='aas'
+b='asdasd'
+def levenstein(a,b):
+    len_a=len(a)
+    len_b=len(b)
+    res=[[-1 for i in range(len_b+1)] for j in range(len_a+1)]
+    k=0
+    for i in range(len_b+1):
+        res[0][i]=k
+        k+=1
+    k=0
+    for i in range(len_a+1):
+        res[i][0]=k
+        k+=1
 
 
-
-def pow(x,n):
-    res=1
-    for i in range(n):
-        res*=x
-    return res'''
+    for i in range(1,len_a+1):
+        for j in range(1,len_b+1):
+            if a[i-1] == b[j-i]:
+                res[i][j] = min(res[i-1][j]+1,res[i][j-1]+1,res[i-1][j-1])
+            else:
+                res[i][j] = min(res[i - 1][j] + 1, res[i][j - 1] + 1, res[i - 1][j - 1]+1)
 
 
 
-
-def triangle(h,depth=1,symbol='.'):
-    if h%2!=0 and depth==h//2+1:
-        print(symbol*depth)
-        return
-    if h%2==0 and depth==h//2:
-        print(symbol*depth)
-        print(symbol*depth)
-        return
+    for s in res:
+        print(*s)
+    return res[-1][-1]
 
 
-    print(symbol*depth)
-    triangle(h,depth=depth+1)
-    print(symbol*depth)
+print(levenstein(a,b))'''
 
-triangle(10)
+
+# наибольшая возрастающая подпоследовательность 
+def LIS_slow(A):
+    F=[0]*len(A)
+    for i in range(len(A)):
+        for j in range(i):
+            if A[j]<A[i] and F[j]>F[i]:
+                F[i]=F[j]
+        F[i]+=1
+    print(F)
+
+LIS_slow([1,3,10,8,7,9])
+
+
+
+
